@@ -1,3 +1,4 @@
+import os
 from typing import Optional, Dict, Any, Tuple
 
 # Model context window limits (in tokens)
@@ -22,7 +23,8 @@ MODEL_CONTEXT_LIMITS = {
 class TokenCounter:
     """Token counter for LLM models"""
 
-    def __init__(self, model: str = "qwen-turbo"):
+    def __init__(self, platform: str = "alibaba", model: str = "qwen-turbo"):
+        self.platform = (platform or "default").lower()
         self.model = model
 
     def count_tokens(self, messages: list, model: Optional[str] = None) -> int:

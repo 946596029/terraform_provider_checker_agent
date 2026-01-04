@@ -6,7 +6,7 @@ Supports: OpenAI, Azure OpenAI, AWS Bedrock, Google Cloud, Alibaba Cloud, Tencen
 import os
 from typing import Optional, Dict, Any, Tuple
 from dotenv import load_dotenv
-from utils.token_counter import TokenCounter
+from ..utils.token_counter import TokenCounter
 
 # Load environment variables
 load_dotenv()
@@ -24,7 +24,7 @@ class LLMClient:
         self.platform = platform.lower()
         self._client = None
         self._initialize_client()
-        self.token_counter = TokenCounter()
+        self.token_counter = TokenCounter(platform=self.platform)
 
     def _initialize_client(self):
         """Initialize client based on platform"""
