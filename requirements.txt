@@ -1,0 +1,25 @@
+# HTTP client libraries for API calls
+requests>=2.31.0
+httpx>=0.24.0
+
+# OpenAI API (supports OpenAI and Azure OpenAI)
+openai>=1.0.0
+
+# AWS Bedrock
+boto3>=1.28.0
+
+# Google Cloud Vertex AI
+google-cloud-aiplatform>=1.38.0
+
+# Alibaba Cloud Tongyi Qianwen
+dashscope>=1.14.0
+
+# Tencent Cloud
+tencentcloud-sdk-python>=3.0.0
+
+# Baidu Qianfan
+qianfan>=0.3.0
+
+# Environment variable management
+python-dotenv>=1.0.0
+
