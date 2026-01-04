@@ -4,12 +4,12 @@ Supports: OpenAI, Azure OpenAI, AWS Bedrock, Google Cloud, Alibaba Cloud, Tencen
 """
 
 import os
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Tuple
 from dotenv import load_dotenv
+from utils.token_counter import TokenCounter
 
 # Load environment variables
 load_dotenv()
-
 
 class LLMClient:
     """Unified LLM client supporting multiple cloud platforms"""
@@ -24,6 +24,7 @@ class LLMClient:
         self.platform = platform.lower()
         self._client = None
         self._initialize_client()
+        self.token_counter = TokenCounter()
 
     def _initialize_client(self):
         """Initialize client based on platform"""
@@ -63,6 +64,7 @@ class LLMClient:
         model: Optional[str] = None,
         temperature: float = 0.7,
         max_tokens: Optional[int] = None,
+        check_context: bool = True,
         **kwargs
     ) -> Dict[str, Any]:
         """
@@ -73,11 +75,19 @@ class LLMClient:
             model: Model name (optional, uses default if not provided)
             temperature: Sampling temperature
             max_tokens: Maximum tokens to generate
+            check_context: If True, check context limit before sending (warns if exceeded)
             **kwargs: Additional platform-specific parameters
             
         Returns:
             Response dict with 'content' and metadata
         """
+        if check_context:
+            is_within_limit, context_info = self.token_counter.check_context_limit( messages=messages, model=model, max_tokens=max_tokens, raise_error=False )
+            if not is_within_limit:
+                raise ValueError(f"Context limit may be exceeded! Input: {context_info['input_tokens']} tokens, Limit: {context_info['context_limit']} tokens, Usage: {context_info['usage_percentage']:.1f}%")
+            elif not context_info['is_safe']:
+                raise ValueError(f"Context usage is high ({context_info['usage_percentage']:.1f}%). Remaining tokens: {context_info['remaining_tokens']}")
+        
         if self.platform == "openai":
             return self._chat_openai(messages, model, temperature, max_tokens, **kwargs)
         elif self.platform == "alibaba":
@@ -131,17 +141,3 @@ class LLMClient:
             }
         else:
             raise Exception(f"API Error: {response.message}")
-
-# Example usage
-if __name__ == "__main__":    
-    # Example 1: Alibaba Cloud Tongyi
-    print("\n=== Alibaba Cloud Tongyi Example ===")
-    try:
-        client = LLMClient(platform="alibaba")
-        messages = [
-            {"role": "user", "content": "你好，请介绍一下你自己"}
-        ]
-        response = client.chat(messages=messages)
-        print(f"Response: \n{response['content']}")
-    except Exception as e:
-        print(f"Error: {e}")
