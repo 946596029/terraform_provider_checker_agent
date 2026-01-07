@@ -2,6 +2,15 @@
 requests>=2.31.0
 httpx>=0.24.0
 
+# LangChain framework
+langchain>=0.2.10
+langchain-core>=0.2.10
+langchain-community>=0.2.10
+langgraph>=0.0.65
+
+# Model Context Protocol client (JSON-RPC 2.0)
+mcp>=0.1.0
+
 # OpenAI API (supports OpenAI and Azure OpenAI)
 openai>=1.0.0
 

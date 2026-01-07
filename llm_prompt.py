@@ -32,6 +32,7 @@ fn main() {
 
 # 请按照以上要求完成任务。
         """
+        
         messages = [
             {"role": "user", "content": prompt}
         ]

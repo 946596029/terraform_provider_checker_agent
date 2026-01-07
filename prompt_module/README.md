@@ -23,6 +23,18 @@ prompt_module/
     └── terraform_provider_checker.json
 ```
 
+## LangChain and MCP setup
+
+- Install dependencies: `pip install -r requirements.txt`.
+- Configure environment variables before using LangChain:
+  - `OPENAI_API_KEY`: API key for OpenAI-compatible endpoints.
+  - `OPENAI_BASE_URL`: Optional custom endpoint for OpenAI-compatible services.
+  - `OPENAI_MODEL`: Model identifier, e.g., `gpt-4o` or provider-specific names.
+- MCP client (JSON-RPC 2.0) placeholders:
+  - `MCP_SERVER_URL`: MCP server endpoint speaking JSON-RPC 2.0.
+  - `MCP_AUTH_TOKEN`: Optional bearer token if the MCP endpoint requires auth.
+- Minimal sanity check (imports only): `python check_imports.py`.
+
 ## Usage
 
 ### Basic Usage
