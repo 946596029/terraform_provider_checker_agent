@@ -4,8 +4,8 @@ Command-line entrypoint for the LangChain translation example.
 
 import argparse
 
-from .chains import translation_chain
-from .config import ensure_api_key
+from ..chains import translation_chain
+from ..config import ensure_api_key
 
 def translate(language: str, text: str) -> str:
     """Run the translation chain for the provided language and text."""
@@ -34,9 +34,6 @@ def main() -> None:
 
     translated = translate(args.language, args.text)
     print(translated)
-
-    fibonacci = fibonacci(args.n)
-    print(fibonacci)
 
 if __name__ == "__main__":
     main()
