@@ -6,7 +6,7 @@
  * `关闭`：.\terraform_provider_checker_agent\Scripts\deactivate.bat
 ### Linux
  * `激活`: source .\bin\activate
- * `关闭`：source .\bin\deactivate
+ * `关闭`：deactivate
 
 ## PowerShell 执行策略
  * `开启`: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
