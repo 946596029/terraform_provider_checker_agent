@@ -1,245 +1,84 @@
-# 代码规范检查结果
+```markdown
+### 代码规范检查结果
 
-## 1. 导入部分的代码格式
-### 检查项：导入块顺序是否符合规范
-- **问题描述**：当前代码中导入块的顺序不符合规范。
-- **具体问题**：
-  - `github.com/hashicorp/go-multierror`、`github.com/hashicorp/terraform-plugin-sdk/v2/diag`、`github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema` 等第三方库的导入顺序不正确，未按照系统库、第三方库、本项目库的顺序排列。
-  - `github.com/huaweicloud/terraform-provider-huaweicloud/huaweicloud/config`、`github.com/huaweicloud/terraform-provider-huaweicloud/huaweicloud/services/internal/entity`、`github.com/huaweicloud/terraform-provider-huaweicloud/huaweicloud/services/internal/httpclient_go` 等本项目库的导入顺序也不符合规范。
+根据提供的代码规范，以下是对你提供的代码的检查结果及详细解释：
 
-### 建议修改：
-```go
-import (
-	"context"
-	"encoding/json"
-	"io"
-	"strings"
-	"time"
+1. **不要存在多余的空格**
+    - **检查结果**：代码中存在多余的空格，例如 `conf :=   meta.(*config.Config)` 和 `if err !=   nil {`。
+    - **详细解释**：多余的空格不符合代码规范，应该删除多余的空格以保持代码整洁。
 
-	"github.com/hashicorp/go-multierror"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+2. **ReadContext方法**
+    - **检查结果**：方法命名符合规范，为 `MyResourceAomApplicationRead`。
+    - **详细解释**：方法名遵循了 `resource{ResourceName}Read` 的命名规则，没有包含包名。
 
-	"github.com/huaweicloud/terraform-provider-huaweicloud/huaweicloud/config"
-	"github.com/huaweicloud/terraform-provider-huaweicloud/huaweicloud/services/internal/entity"
-	"github.com/huaweicloud/terraform-provider-huaweicloud/huaweicloud/services/internal/httpclient_go"
-)
+3. **ReadContext方法的入参**
+    - **检查结果**：方法的入参为 `ctx context.Context, d *schema.ResourceData, meta interface{}`，符合规范。
+    - **详细解释**：方法的入参完全符合规范，包括上下文 `ctx`、资源数据 `d` 和元数据 `meta`。
+
+4. **ReadContext方法的返回值**
+    - **检查结果**：方法的返回值为 `diag.Diagnostics`，符合规范。
+    - **详细解释**：返回值类型正确，符合规范要求。
+
+5. **ReadContext方法的实现步骤**
+    - **获取region**：代码中通过 `conf.GetRegion(d)` 获取了region，符合规范。
+    - **创建client**：代码中通过 `httpclient_go.NewHttpClientGo(conf, "cmdb", conf.GetRegion(d))` 创建了client，符合规范。
+    - **构建请求方法**：代码中通过 `client.WithMethod(httpclient_go.MethodGet).WithUrl("v1/applications/" + d.Id())` 构建了请求方法，符合规范。
+    - **调用请求方法发送请求**：代码中通过 `client.Do()` 发送了请求，符合规范。
+    - **如返回错误则使用common.CheckDeletedDiag方法判断是否是资源不存在导致的（404错误）**：代码中通过 `client.CheckDeletedDiag(d, err, response, "error retrieving Application")` 处理了错误，但该方法不是 `common.CheckDeletedDiag`，且参数传递不符合规范。应改为 `common.CheckDeletedDiag(d, err, "error retrieving Application")` 并确保 `response` 包含正确的错误信息。
+    - **根据查询返回信息回填属性**：代码中通过 `d.Set` 方法回填了属性，但缺少解析方法的定义，且回填顺序不明确。
+        - **详细解释**：对于复杂的对象和列表类型的属性，应定义相应的解析方法。此外，回填属性时应参考schema的定义顺序，并标识分类（必选参数、可选参数）。
+
+### 修改建议
+
+1. **删除多余的空格**
+    ```go
+    conf := meta.(*config.Config)
+    client, err := httpclient_go.NewHttpClientGo(conf, "cmdb", conf.GetRegion(d))
+    if err != nil {
+        return diag.Errorf("err creating Client: %s", err)
+    }
+    ```
+
+2. **修正错误处理**
+    ```go
+    body, diags := client.CheckDeletedDiag(d, err, "error retrieving Application")
+    if body == nil {
+        return diags
+    }
+    ```
+
+3. **添加解析方法**
+    - 根据查询返回信息回填属性时，应定义相应的解析方法。
+    - 示例：
+        ```go
+        func flattenAomApplicationAttributes(rlt *entity.BizAppVo) ([]map[string]interface{}) {
+            return []map[string]interface{}{
+                {
+                    "aom_id":                rlt.AomId,
+                    "app_id":                rlt.AppId,
+                    "create_time":           rlt.CreateTime,
+                    "creator":               rlt.Creator,
+                    "description":           rlt.Description,
+                    "display_name":          rlt.DisplayName,
+                    "enterprise_project_id": rlt.EpsId,
+                    "modified_time":         rlt.ModifiedTime,
+                    "modifier":              rlt.Modifier,
+                    "name":                  rlt.Name,
+                    "register_type":         rlt.RegisterType,
+                },
+            }
+        }
+        ```
+
+4. **使用解析方法回填属性**
+    ```go
+    mErr := multierror.Append(nil,
+        d.Set("attributes", flattenAomApplicationAttributes(rlt)...),
+    )
+    if err := mErr.ErrorOrNil(); err != nil {
+        return diag.Errorf("error setting Application fields: %s", err)
+    }
+    ```
+
+通过以上修改，代码将更加符合规范，提高代码的可读性和可维护性。
 ```
-
----
-
-## 2. 自定义类型、全局变量、常量的声明
-### 检查项：是否在导入块下方声明自定义类型、全局变量和常量
-- **问题描述**：当前代码中没有声明任何自定义类型、全局变量或常量。
-- **建议**：如果存在不可更新参数列表或其他需要统一声明的常量，应添加到导入块下方。
-
----
-
-## 3. 资源所用API的声明汇总
-### 检查项：API声明是否按C-R-U-D顺序排列
-- **问题描述**：当前代码中的API声明顺序为POST、GET、PUT、DELETE，但缺少了对每个API的注释说明。
-- **建议**：应在资源主方法上方添加注释说明每个API的用途，例如：
-```go
-// @API CMDB POST /v1/applications
-// @API CMDB GET /v1/applications/{application_id}
-// @API CMDB PUT /v1/applications/{application_id}
-// @API CMDB DELETE /v1/applications/{application_id}
-// @API CMDB GET /v1/applications
-```
-
----
-
-## 4. 主方法
-### 检查项：主方法命名是否符合规范
-- **问题描述**：主方法名为 `ResourceAomApplication`，符合规范。
-- **建议**：无需修改。
-
----
-
-## 5. CRUD方法声明
-### 检查项：CRUD方法是否在主方法中正确引用
-- **问题描述**：主方法中正确引用了 `CreateContext: ResourceAomApplicationCreate`, `ReadContext: ResourceAomApplicationRead`, `UpdateContext: ResourceAomApplicationUpdate`, `DeleteContext: ResourceAomApplicationDelete`。
-- **建议**：无需修改。
-
----
-
-## 6. 导入方法声明
-### 检查项：是否正确声明了Importer
-- **问题描述**：当前代码中使用了 `Importer: &schema.ResourceImporter{StateContext: schema.ImportStatePassthroughContext}`，这是正确的做法。
-- **建议**：无需修改。
-
----
-
-## 7. Timeout
-### 检查项：是否为异步操作设置了超时时间
-- **问题描述**：当前代码中为资源设置了 `Timeouts: &schema.ResourceTimeout{Create: schema.DefaultTimeout(5 * time.Minute), Update: schema.DefaultTimeout(5 * time.Minute), Delete: schema.DefaultTimeout(5 * time.Minute)}`，这是正确的做法。
-- **建议**：无需修改。
-
----
-
-## 8. CustomizeDiff方法
-### 检查项：是否需要自定义ForceNew行为
-- **问题描述**：当前代码中没有使用 `CustomizeDiff` 方法。
-- **建议**：如果存在不可更新参数，应添加 `CustomizeDiff: config.FlexibleForceNew(...)`。
-
----
-
-## 9. Schema定义
-### 检查项：Schema定义顺序是否符合规范
-- **问题描述**：当前代码中的 Schema 定义顺序为 `name`, `region`, `aom_id`, `app_id`, `create_time`, `creator`, `description`, `display_name`, `enterprise_project_id`, `modified_time`, `modifier`, `register_type`，这与规范要求的顺序（region, 必选参数, 可选参数, 属性）不一致。
-- **建议**：应将 `region` 放在最前面，然后是必选参数，再是可选参数，最后是属性。
-
-### 修改建议：
-```go
-Schema: map[string]*schema.Schema{
-	"region": {
-		Type:     schema.TypeString,
-		Computed: true,
-	},
-	"name": {
-		Type:     schema.TypeString,
-		Required: true,
-	},
-	"description": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Computed: true,
-	},
-	"display_name": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Computed: true,
-	},
-	"enterprise_project_id": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Computed: true,
-	},
-	"aom_id": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Computed: true,
-	},
-	"app_id": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Computed: true,
-	},
-	"create_time": {
-		Type:     schema.TypeString,
-		Computed: true,
-	},
-	"creator": {
-		Type:     schema.TypeString,
-		Computed: true,
-	},
-	"modified_time": {
-		Type:     schema.TypeString,
-		Computed: true,
-	},
-	"modifier": {
-		Type:     schema.TypeString,
-		Computed: true,
-	},
-	"register_type": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Computed: true,
-	},
-}
-```
-
----
-
-## 10. CRUD方法定义
-### CreateContext 方法
-#### 检查项：是否获取 region 和创建 client
-- **问题描述**：`ResourceAomApplicationCreate` 方法中正确获取了 `conf` 和 `client`。
-- **建议**：无需修改。
-
-#### 检查项：是否构建请求体
-- **问题描述**：`ResourceAomApplicationCreate` 方法中构建了 `opts` 请求体，但未使用 `buildAppBodyParams` 方法。
-- **建议**：应抽象出一个 `buildAppBodyParams` 方法来封装请求体构建逻辑。
-
-#### 检查项：是否发送请求并处理响应
-- **问题描述**：`ResourceAomApplicationCreate` 方法中正确发送了请求并处理了响应。
-- **建议**：无需修改。
-
-#### 检查项：是否设置 ID
-- **问题描述**：`ResourceAomApplicationCreate` 方法中正确设置了 `d.SetId(rlt.Id)`。
-- **建议**：无需修改。
-
-#### 检查项：是否返回 ReadContext 方法
-- **问题描述**：`ResourceAomApplicationCreate` 方法中正确返回了 `ResourceAomApplicationRead`。
-- **建议**：无需修改。
-
-### ReadContext 方法
-#### 检查项：是否获取 region 和创建 client
-- **问题描述**：`ResourceAomApplicationRead` 方法中正确获取了 `conf` 和 `client`。
-- **建议**：无需修改。
-
-#### 检查项：是否构建请求体
-- **问题描述**：`ResourceAomApplicationRead` 方法中未构建请求体，直接发送了 GET 请求。
-- **建议**：无需修改。
-
-#### 检查项：是否处理错误
-- **问题描述**：`ResourceAomApplicationRead` 方法中正确处理了错误，并调用了 `CheckDeletedDiag`。
-- **建议**：无需修改。
-
-#### 检查项：是否回填属性
-- **问题描述**：`ResourceAomApplicationRead` 方法中正确回填了所有属性。
-- **建议**：无需修改。
-
-### UpdateContext 方法
-#### 检查项：是否获取 region 和创建 client
-- **问题描述**：`ResourceAomApplicationUpdate` 方法中正确获取了 `conf` 和 `client`。
-- **建议**：无需修改。
-
-#### 检查项：是否构建请求体
-- **问题描述**：`ResourceAomApplicationUpdate` 方法中构建了 `opts` 请求体，但未使用 `buildAppBodyParams` 方法。
-- **建议**：应抽象出一个 `buildAppBodyParams` 方法来封装请求体构建逻辑。
-
-#### 检查项：是否发送请求并处理响应
-- **问题描述**：`ResourceAomApplicationUpdate` 方法中正确发送了请求并处理了响应。
-- **建议**：无需修改。
-
-### DeleteContext 方法
-#### 检查项：是否获取 region 和创建 client
-- **问题描述**：`ResourceAomApplicationDelete` 方法中正确获取了 `conf` 和 `client`。
-- **建议**：无需修改。
-
-#### 检查项：是否构建请求体
-- **问题描述**：`ResourceAomApplicationDelete` 方法中未构建请求体，直接发送了 DELETE 请求。
-- **建议**：无需修改。
-
-#### 检查项：是否发送请求并处理响应
-- **问题描述**：`ResourceAomApplicationDelete` 方法中正确发送了请求并处理了响应。
-- **建议**：无需修改。
-
----
-
-## 11. 其他建议
-### 检查项：是否遵循 Go 语言的通用编程规范
-- **问题描述**：代码整体结构清晰，但部分方法名和变量名可以更符合 Go 语言的命名习惯。
-- **建议**：
-  - 方法名如 `getAppByName` 可以改为 `getApplicationByName`。
-  - 变量名如 `rlt` 可以改为 `result` 或 `response`。
-
-### 检查项：是否为所有包外可见方法添加注释
-- **问题描述**：当前代码中未为所有包外可见方法添加注释。
-- **建议**：应为所有公共方法添加注释，说明其功能和参数。
-
-### 检查项：是否避免过深的嵌套
-- **问题描述**：当前代码中嵌套较深，特别是 `getAppByName` 方法。
-- **建议**：应拆分复杂逻辑为多个子方法，提高可读性。
-
----
-
-## 总结
-当前代码基本符合 Terraform Provider 的开发规范，但在以下方面需要改进：
-1. **导入块顺序**：需按照系统库、第三方库、本项目库的顺序排列。
-2. **Schema 定义顺序**：需按照 region、必选参数、可选参数、属性的顺序排列。
-3. **请求体构建**：应抽象出 `buildAppBodyParams` 方法。
-4. **方法命名**：部分方法名和变量名可优化为更符合 Go 语言的命名习惯。
-5. **注释**：应为所有包外可见方法添加注释。
-6. **代码结构**：应拆分复杂逻辑为多个子方法，提高可读性。
