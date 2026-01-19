@@ -1,0 +1,236 @@
+└── Document: "subcategory: "Content Delivery Network (CDN)"layout: "huaweicloud"page_title: "HuaweiCloud: huaweicloud_cdn_cache_refresh"description: |-Manages a CDN cache refresh resource within HuaweiCloud.huaweicloud_cdn_cache_refreshManages a CDN cache refresh resource within HuaweiCloud.Example Usagevariable "urls" {
+  type = list(string)
+}
+
+resource "huaweicloud_cdn_cache_refresh" "test" {
+  urls = var.urls
+}Argument ReferenceThe following arguments are supported:urls - (Required, List, NonUpdatable) Specifies the URLs that need to be refreshed.A URL must start with http:// or https:// and must contain the accelerated domain name.A URL can contain up to 4,096 characters. Enter up to 1,000 URLs or 100 directories and separate them bycommas(,).When type is set to file, the value should be file path. Example: http://www.example.com/file01.html orhttp://www.example.com/.When type is set to directory, the value should be directory path. The URL must end with a slash (/).Example: http://www.example.com/tt/ee/.enterprise_project_id - (Optional, String, NonUpdatable) Specifies the ID of the enterprise project to which theresource belongs.This parameter is only valid for enterprise users and is required when using sub-account.The value all represents all enterprise projects.type - (Optional, String, NonUpdatable) Specifies the refresh type.The valid values are as follows:filedirectoryDefaults to file.mode - (Optional, String, NonUpdatable) Specifies the directory refresh mode.The valid values are as follows:all: Refresh all resources in the directory.detect_modify_refresh: Refresh changed resources in the directory.This field is valid only when type is set to directory. Defaults to all.zh_url_encode - (Optional, Bool, NonUpdatable) Specifies whether to encode Chinese characters in URLs before cacherefresh.The value false indicates disabled, and true indicates enabled. After enabled, cache is refreshed only fortranscode URLs. Defaults to false.Attribute ReferenceIn addition to all arguments above, the following attributes are exported:id - The resource ID.status - The task execution result.task_done: successful.task_inprocess: processing.created_at - The creation time, in RFC3339 format.processing - The number of URLs that are being processed.succeed - The number of URLs processed.failed - The number of URLs that failed to be processed.total - The total number of URLs in historical tasks.TimeoutsThis resource provides the following timeouts configuration options:create - Default is 5 minutes."
+    ├── ThematicBreak
+    ├── SetextHeading: "subcategory: "Content Delivery Network (CDN)"layout: "huaweicloud"page_title: "HuaweiCloud: huaweicloud_cdn_cache_refresh"description: |-Manages a CDN cache refresh resource within HuaweiCloud."
+    │   ├── RawText: "subcategory: "Content Delivery Network (CDN)""
+    │   ├── LineBreak: (1 children)
+    │   ├── RawText: "layout: "huaweicloud""
+    │   ├── LineBreak: (1 children)
+    │   ├── RawText: "page_title: "HuaweiCloud: huaweicloud_cdn_cache_refresh""
+    │   ├── LineBreak: (1 children)
+    │   ├── RawText: "description: |-"
+    │   ├── LineBreak: (1 children)
+    │   └── RawText: "Manages a CDN cache refresh resource within HuaweiCloud."
+    ├── BlankLine
+    ├── Heading: level=1, "huaweicloud_cdn_cache_refresh"
+    │   └── RawText: "huaweicloud_cdn_cache_refresh"
+    ├── BlankLine
+    ├── Paragraph: "Manages a CDN cache refresh resource within HuaweiCloud."
+    │   └── RawText: "Manages a CDN cache refresh resource within HuaweiCloud."
+    ├── BlankLine
+    ├── Heading: level=2, "Example Usage"
+    │   └── RawText: "Example Usage"
+    ├── BlankLine
+    ├── FencedCode: "variable "urls" {
+  type = list(string)
+}
+
+resource "huaweicloud_cdn_cache_refresh" "test" {
+  urls = var.urls
+}"
+    │   └── RawText: "variable "urls" {
+  type = list(string)
+}
+
+resource "huaweicloud_cdn_cache_refresh" "test" {
+  urls = var.urls
+}"
+    ├── BlankLine
+    ├── Heading: level=2, "Argument Reference"
+    │   └── RawText: "Argument Reference"
+    ├── BlankLine
+    ├── Paragraph: "The following arguments are supported:"
+    │   └── RawText: "The following arguments are supported:"
+    ├── BlankLine
+    ├── List: "urls - (Required, List, NonUpdatable) Specifies the URLs that need to be refreshed.A URL must start with http:// or https:// and must contain the accelerated domain name.A URL can contain up to 4,096 characters. Enter up to 1,000 URLs or 100 directories and separate them bycommas(,).When type is set to file, the value should be file path. Example: http://www.example.com/file01.html orhttp://www.example.com/.When type is set to directory, the value should be directory path. The URL must end with a slash (/).Example: http://www.example.com/tt/ee/.enterprise_project_id - (Optional, String, NonUpdatable) Specifies the ID of the enterprise project to which theresource belongs.This parameter is only valid for enterprise users and is required when using sub-account.The value all represents all enterprise projects.type - (Optional, String, NonUpdatable) Specifies the refresh type.The valid values are as follows:filedirectoryDefaults to file.mode - (Optional, String, NonUpdatable) Specifies the directory refresh mode.The valid values are as follows:all: Refresh all resources in the directory.detect_modify_refresh: Refresh changed resources in the directory.This field is valid only when type is set to directory. Defaults to all.zh_url_encode - (Optional, Bool, NonUpdatable) Specifies whether to encode Chinese characters in URLs before cacherefresh.The value false indicates disabled, and true indicates enabled. After enabled, cache is refreshed only fortranscode URLs. Defaults to false."
+    │   ├── ListItem: "urls - (Required, List, NonUpdatable) Specifies the URLs that need to be refreshed.A URL must start with http:// or https:// and must contain the accelerated domain name.A URL can contain up to 4,096 characters. Enter up to 1,000 URLs or 100 directories and separate them bycommas(,).When type is set to file, the value should be file path. Example: http://www.example.com/file01.html orhttp://www.example.com/.When type is set to directory, the value should be directory path. The URL must end with a slash (/).Example: http://www.example.com/tt/ee/."
+    │   │   ├── Paragraph: "urls - (Required, List, NonUpdatable) Specifies the URLs that need to be refreshed.A URL must start with http:// or https:// and must contain the accelerated domain name.A URL can contain up to 4,096 characters. Enter up to 1,000 URLs or 100 directories and separate them bycommas(,)."
+    │   │   │   ├── CodeSpan: "urls"
+    │   │   │   ├── RawText: "- (Required, List, NonUpdatable) Specifies the URLs that need to be refreshed."
+    │   │   │   ├── LineBreak: (1 children)
+    │   │   │   ├── RawText: "A URL must start with"
+    │   │   │   ├── CodeSpan: "http://"
+    │   │   │   ├── RawText: "or"
+    │   │   │   ├── CodeSpan: "https://"
+    │   │   │   ├── RawText: "and must contain the accelerated domain name."
+    │   │   │   ├── LineBreak: (1 children)
+    │   │   │   ├── RawText: "A URL can contain up to"
+    │   │   │   ├── CodeSpan: "4,096"
+    │   │   │   ├── RawText: "characters. Enter up to"
+    │   │   │   ├── CodeSpan: "1,000"
+    │   │   │   ├── RawText: "URLs or"
+    │   │   │   ├── CodeSpan: "100"
+    │   │   │   ├── RawText: "directories and separate them by"
+    │   │   │   ├── LineBreak: (1 children)
+    │   │   │   └── RawText: "commas(,)."
+    │   │   └── List: "When type is set to file, the value should be file path. Example: http://www.example.com/file01.html orhttp://www.example.com/.When type is set to directory, the value should be directory path. The URL must end with a slash (/).Example: http://www.example.com/tt/ee/."
+    │   │       ├── ListItem: "When type is set to file, the value should be file path. Example: http://www.example.com/file01.html orhttp://www.example.com/."
+    │   │       │   └── Paragraph: "When type is set to file, the value should be file path. Example: http://www.example.com/file01.html orhttp://www.example.com/."
+    │   │       │       ├── RawText: "When"
+    │   │       │       ├── CodeSpan: "type"
+    │   │       │       ├── RawText: "is set to"
+    │   │       │       ├── StrongEmphasis: "file"
+    │   │       │       │   └── RawText: "file"
+    │   │       │       ├── RawText: ", the value should be file path. Example:"
+    │   │       │       ├── CodeSpan: "http://www.example.com/file01.html"
+    │   │       │       ├── RawText: "or"
+    │   │       │       ├── LineBreak: (1 children)
+    │   │       │       ├── CodeSpan: "http://www.example.com/"
+    │   │       │       └── RawText: "."
+    │   │       └── ListItem: "When type is set to directory, the value should be directory path. The URL must end with a slash (/).Example: http://www.example.com/tt/ee/."
+    │   │           └── Paragraph: "When type is set to directory, the value should be directory path. The URL must end with a slash (/).Example: http://www.example.com/tt/ee/."
+    │   │               ├── RawText: "When"
+    │   │               ├── CodeSpan: "type"
+    │   │               ├── RawText: "is set to"
+    │   │               ├── StrongEmphasis: "directory"
+    │   │               │   └── RawText: "directory"
+    │   │               ├── RawText: ", the value should be directory path. The URL must end with a slash (/)."
+    │   │               ├── LineBreak: (1 children)
+    │   │               ├── RawText: "Example:"
+    │   │               ├── CodeSpan: "http://www.example.com/tt/ee/"
+    │   │               └── RawText: "."
+    │   ├── ListItem: "enterprise_project_id - (Optional, String, NonUpdatable) Specifies the ID of the enterprise project to which theresource belongs.This parameter is only valid for enterprise users and is required when using sub-account.The value all represents all enterprise projects."
+    │   │   └── Paragraph: "enterprise_project_id - (Optional, String, NonUpdatable) Specifies the ID of the enterprise project to which theresource belongs.This parameter is only valid for enterprise users and is required when using sub-account.The value all represents all enterprise projects."
+    │   │       ├── CodeSpan: "enterprise_project_id"
+    │   │       ├── RawText: "- (Optional, String, NonUpdatable) Specifies the ID of the enterprise project to which the"
+    │   │       ├── LineBreak: (1 children)
+    │   │       ├── RawText: "resource belongs."
+    │   │       ├── LineBreak: (1 children)
+    │   │       ├── RawText: "This parameter is only valid for enterprise users and is required when using sub-account."
+    │   │       ├── LineBreak: (1 children)
+    │   │       ├── RawText: "The value"
+    │   │       ├── StrongEmphasis: "all"
+    │   │       │   └── RawText: "all"
+    │   │       └── RawText: "represents all enterprise projects."
+    │   ├── ListItem: "type - (Optional, String, NonUpdatable) Specifies the refresh type.The valid values are as follows:filedirectoryDefaults to file."
+    │   │   ├── Paragraph: "type - (Optional, String, NonUpdatable) Specifies the refresh type.The valid values are as follows:"
+    │   │   │   ├── CodeSpan: "type"
+    │   │   │   ├── RawText: "- (Optional, String, NonUpdatable) Specifies the refresh type."
+    │   │   │   ├── LineBreak: (1 children)
+    │   │   │   └── RawText: "The valid values are as follows:"
+    │   │   ├── List: "filedirectory"
+    │   │   │   ├── ListItem: "file"
+    │   │   │   │   └── Paragraph: "file"
+    │   │   │   │       └── StrongEmphasis: "file"
+    │   │   │   │           └── RawText: "file"
+    │   │   │   └── ListItem: "directory"
+    │   │   │       └── Paragraph: "directory"
+    │   │   │           └── StrongEmphasis: "directory"
+    │   │   │               └── RawText: "directory"
+    │   │   ├── BlankLine
+    │   │   └── Paragraph: "Defaults to file."
+    │   │       ├── RawText: "Defaults to"
+    │   │       ├── StrongEmphasis: "file"
+    │   │       │   └── RawText: "file"
+    │   │       └── RawText: "."
+    │   ├── ListItem: "mode - (Optional, String, NonUpdatable) Specifies the directory refresh mode.The valid values are as follows:all: Refresh all resources in the directory.detect_modify_refresh: Refresh changed resources in the directory.This field is valid only when type is set to directory. Defaults to all."
+    │   │   ├── Paragraph: "mode - (Optional, String, NonUpdatable) Specifies the directory refresh mode.The valid values are as follows:"
+    │   │   │   ├── CodeSpan: "mode"
+    │   │   │   ├── RawText: "- (Optional, String, NonUpdatable) Specifies the directory refresh mode."
+    │   │   │   ├── LineBreak: (1 children)
+    │   │   │   └── RawText: "The valid values are as follows:"
+    │   │   ├── List: "all: Refresh all resources in the directory.detect_modify_refresh: Refresh changed resources in the directory."
+    │   │   │   ├── ListItem: "all: Refresh all resources in the directory."
+    │   │   │   │   └── Paragraph: "all: Refresh all resources in the directory."
+    │   │   │   │       ├── StrongEmphasis: "all"
+    │   │   │   │       │   └── RawText: "all"
+    │   │   │   │       └── RawText: ": Refresh all resources in the directory."
+    │   │   │   └── ListItem: "detect_modify_refresh: Refresh changed resources in the directory."
+    │   │   │       └── Paragraph: "detect_modify_refresh: Refresh changed resources in the directory."
+    │   │   │           ├── StrongEmphasis: "detect_modify_refresh"
+    │   │   │           │   └── RawText: "detect_modify_refresh"
+    │   │   │           └── RawText: ": Refresh changed resources in the directory."
+    │   │   ├── BlankLine
+    │   │   └── Paragraph: "This field is valid only when type is set to directory. Defaults to all."
+    │   │       ├── RawText: "This field is valid only when"
+    │   │       ├── CodeSpan: "type"
+    │   │       ├── RawText: "is set to"
+    │   │       ├── StrongEmphasis: "directory"
+    │   │       │   └── RawText: "directory"
+    │   │       ├── RawText: ". Defaults to"
+    │   │       ├── StrongEmphasis: "all"
+    │   │       │   └── RawText: "all"
+    │   │       └── RawText: "."
+    │   └── ListItem: "zh_url_encode - (Optional, Bool, NonUpdatable) Specifies whether to encode Chinese characters in URLs before cacherefresh.The value false indicates disabled, and true indicates enabled. After enabled, cache is refreshed only fortranscode URLs. Defaults to false."
+    │       └── Paragraph: "zh_url_encode - (Optional, Bool, NonUpdatable) Specifies whether to encode Chinese characters in URLs before cacherefresh.The value false indicates disabled, and true indicates enabled. After enabled, cache is refreshed only fortranscode URLs. Defaults to false."
+    │           ├── CodeSpan: "zh_url_encode"
+    │           ├── RawText: "- (Optional, Bool, NonUpdatable) Specifies whether to encode Chinese characters in URLs before cache"
+    │           ├── LineBreak: (1 children)
+    │           ├── RawText: "refresh."
+    │           ├── LineBreak: (1 children)
+    │           ├── RawText: "The value"
+    │           ├── StrongEmphasis: "false"
+    │           │   └── RawText: "false"
+    │           ├── RawText: "indicates disabled, and"
+    │           ├── StrongEmphasis: "true"
+    │           │   └── RawText: "true"
+    │           ├── RawText: "indicates enabled. After enabled, cache is refreshed only for"
+    │           ├── LineBreak: (1 children)
+    │           ├── RawText: "transcode URLs. Defaults to"
+    │           ├── StrongEmphasis: "false"
+    │           │   └── RawText: "false"
+    │           └── RawText: "."
+    ├── BlankLine
+    ├── Heading: level=2, "Attribute Reference"
+    │   └── RawText: "Attribute Reference"
+    ├── BlankLine
+    ├── Paragraph: "In addition to all arguments above, the following attributes are exported:"
+    │   └── RawText: "In addition to all arguments above, the following attributes are exported:"
+    ├── BlankLine
+    ├── List: "id - The resource ID.status - The task execution result.task_done: successful.task_inprocess: processing.created_at - The creation time, in RFC3339 format.processing - The number of URLs that are being processed.succeed - The number of URLs processed.failed - The number of URLs that failed to be processed.total - The total number of URLs in historical tasks."
+    │   ├── ListItem: "id - The resource ID."
+    │   │   └── Paragraph: "id - The resource ID."
+    │   │       ├── CodeSpan: "id"
+    │   │       └── RawText: "- The resource ID."
+    │   ├── ListItem: "status - The task execution result.task_done: successful.task_inprocess: processing."
+    │   │   ├── Paragraph: "status - The task execution result."
+    │   │   │   ├── CodeSpan: "status"
+    │   │   │   └── RawText: "- The task execution result."
+    │   │   └── List: "task_done: successful.task_inprocess: processing."
+    │   │       ├── ListItem: "task_done: successful."
+    │   │       │   └── Paragraph: "task_done: successful."
+    │   │       │       ├── StrongEmphasis: "task_done"
+    │   │       │       │   └── RawText: "task_done"
+    │   │       │       └── RawText: ": successful."
+    │   │       └── ListItem: "task_inprocess: processing."
+    │   │           └── Paragraph: "task_inprocess: processing."
+    │   │               ├── StrongEmphasis: "task_inprocess"
+    │   │               │   └── RawText: "task_inprocess"
+    │   │               └── RawText: ": processing."
+    │   ├── ListItem: "created_at - The creation time, in RFC3339 format."
+    │   │   └── Paragraph: "created_at - The creation time, in RFC3339 format."
+    │   │       ├── CodeSpan: "created_at"
+    │   │       └── RawText: "- The creation time, in RFC3339 format."
+    │   ├── ListItem: "processing - The number of URLs that are being processed."
+    │   │   └── Paragraph: "processing - The number of URLs that are being processed."
+    │   │       ├── CodeSpan: "processing"
+    │   │       └── RawText: "- The number of URLs that are being processed."
+    │   ├── ListItem: "succeed - The number of URLs processed."
+    │   │   └── Paragraph: "succeed - The number of URLs processed."
+    │   │       ├── CodeSpan: "succeed"
+    │   │       └── RawText: "- The number of URLs processed."
+    │   ├── ListItem: "failed - The number of URLs that failed to be processed."
+    │   │   └── Paragraph: "failed - The number of URLs that failed to be processed."
+    │   │       ├── CodeSpan: "failed"
+    │   │       └── RawText: "- The number of URLs that failed to be processed."
+    │   └── ListItem: "total - The total number of URLs in historical tasks."
+    │       └── Paragraph: "total - The total number of URLs in historical tasks."
+    │           ├── CodeSpan: "total"
+    │           └── RawText: "- The total number of URLs in historical tasks."
+    ├── BlankLine
+    ├── Heading: level=2, "Timeouts"
+    │   └── RawText: "Timeouts"
+    ├── BlankLine
+    ├── Paragraph: "This resource provides the following timeouts configuration options:"
+    │   └── RawText: "This resource provides the following timeouts configuration options:"
+    ├── BlankLine
+    └── List: "create - Default is 5 minutes."
+        └── ListItem: "create - Default is 5 minutes."
+            └── Paragraph: "create - Default is 5 minutes."
+                ├── CodeSpan: "create"
+                └── RawText: "- Default is 5 minutes."
